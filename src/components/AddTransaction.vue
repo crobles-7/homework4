@@ -4,7 +4,7 @@
     const amount = ref('')
 
     const emit = defineEmits([
-        'transactioSubmitted'
+        'transactionSubmitted'
     ])
 
     const onSubmit = () =>{
@@ -12,7 +12,7 @@
             text: text.value,
             amount: parseFloat(amount.value),
         }
-        emit('transactioSubmitted', transactionData)
+        emit('transactionSubmitted', transactionData)
 
         text.value = ''
         amount.value = ''
