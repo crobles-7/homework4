@@ -4,8 +4,8 @@
   import IncomeExpenses from './components/IncomeExpenses.vue';
   import AddTransaction from './components/AddTransaction.vue';
   import TransactionList from './components/TransactionList.vue';
-
-  import {computed, ref} from 'vue';
+  
+  import {computed, onMounted, ref} from 'vue';
 
   const transactions = ref([])
 
@@ -33,9 +33,11 @@
 
   const handleTransaction = (transactionData) => {
     transactions.value.push({
+    id: generateID(),
     text: transactionData.text,
     amount: transactionData.amount,
     })
+    saveToLocalStorage()
   }
 
   const generateID = () => {
@@ -44,7 +46,19 @@
 
   const handleDelete = (id) => {
     transactions.value = transactions.value.filter((x) => x.id !== id)
+    saveToLocalStorage()
   }
+
+  const saveToLocalStorage = () => {
+    localStorage.setItem('transactions', JSON.stringify(transactions.value))
+  }
+
+  onMounted( () => {
+    const savedTransactions = JSON.parse(localStorage.getItem('transactions'))
+    if(savedTransactions){
+      transactions.value = savedTransactions
+    }
+  })
 </script>
 
 <template>
